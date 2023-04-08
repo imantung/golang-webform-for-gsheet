@@ -7,11 +7,11 @@ import (
 	"github.com/kelseyhightower/envconfig"
 )
 
-// NOTE: Generate .env or .envrc file using `go generate ./internal/app/infra/config.go > .envrc `
-//go:generate echo export APP_ADDRESS=:8089
-//go:generate echo export APP_READ_TIMEOUT=5s
-//go:generate echo export APP_WRITE_TIMEOUT=10s
-//go:generate echo export APP_DEBUG=true
+//go:generate rm -f $PROJ/.envrc
+//go:generate file_append $PROJ/.envrc export APP_ADDRESS=:8089
+//go:generate file_append $PROJ/.envrc export APP_READ_TIMEOUT=5s
+//go:generate file_append $PROJ/.envrc export APP_WRITE_TIMEOUT=10s
+//go:generate file_append $PROJ/.envrc export APP_DEBUG=true
 
 const (
 	ConfigPrefix = "APP"
