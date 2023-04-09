@@ -1,0 +1,75 @@
+<html>
+
+<h1>Update #</h1>
+
+
+
+<form method="post">
+    <table>
+        <tr>
+            <td><label for="name">Name:</label></td>
+            <td><input type="text" id="name" name="name"></td>
+        </tr>
+        
+        <tr>
+            <td><label for="gender">Gender:</label></td>
+            <td>
+                <select type="text" id="gender" name="gender">
+                    {{range $item := .Opts.Genders}}
+                    <option>{{$item}}</option>
+                    {{end}}
+                </select>
+            </td>
+        </tr>
+        
+        <tr>
+            <td><label for="level">Class Level:</label></td>
+            <td>
+                <select type="text" id="level" name="level">
+                    {{range $item := .Opts.Levels}}
+                    <option>{{$item}}</option>
+                    {{end}}
+                </select>
+            </td>
+        </td>
+    </tr>
+    
+    <tr>
+        <td><label for="state">Home State:</label></td>
+        <td>
+            <select type="text" id="state" name="state">
+                {{range $item := .Opts.States}}
+                <option>{{$item}}</option>
+                {{end}}
+            </select>
+        </td>
+    </tr>
+    
+    <tr>
+        <td><label for="major">Major:</label></td>
+        <td>
+            <select type="text" id="major" name="major">
+                {{range $item := .Opts.Majors}}
+                <option>{{$item}}</option>
+                {{end}}
+            </select>
+        </td>
+    </tr>
+    
+    <tr>
+        <td><label for="activity">Extracurricular Activity:</label></td>
+        <td>
+            <select type="text" id="activity" name="activity">
+                {{range $item := .Opts.Activities}}
+                <option>{{$item}}</option>
+                {{end}}
+            </select>
+        </td>
+    </tr>
+</table>
+
+<input type="submit" value="Submit">
+
+</form>
+
+</html>

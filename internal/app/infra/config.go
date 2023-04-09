@@ -7,12 +7,6 @@ import (
 	"github.com/kelseyhightower/envconfig"
 )
 
-//go:generate rm -f $PROJ/.envrc
-//go:generate file_append $PROJ/.envrc export APP_ADDRESS=:8089
-//go:generate file_append $PROJ/.envrc export APP_READ_TIMEOUT=5s
-//go:generate file_append $PROJ/.envrc export APP_WRITE_TIMEOUT=10s
-//go:generate file_append $PROJ/.envrc export APP_DEBUG=true
-
 const (
 	ConfigPrefix = "APP"
 )
@@ -25,6 +19,12 @@ type (
 		Debug        bool          `envconfig:"DEBUG" default:"true"`
 	}
 )
+
+//go:generate rm -f $PROJ/.envrc
+//go:generate file_append $PROJ/.envrc export APP_ADDRESS=:8089
+//go:generate file_append $PROJ/.envrc export APP_READ_TIMEOUT=5s
+//go:generate file_append $PROJ/.envrc export APP_WRITE_TIMEOUT=10s
+//go:generate file_append $PROJ/.envrc export APP_DEBUG=true
 
 func init() {
 	di.Provide(LoadAppConfig)

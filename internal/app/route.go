@@ -7,10 +7,10 @@ import (
 
 func setRoute(
 	e *echo.Echo,
-	cntrl *controller.UpdateCntrl,
+	updateCntrl controller.UpdateCntrl,
 ) {
 
-	e.GET("update", cntrl.Form)
-	e.POST("update", cntrl.Form)
+	e.GET("update", updateCntrl.Form)
+	e.POST("update", updateCntrl.Submit)
 
 }
