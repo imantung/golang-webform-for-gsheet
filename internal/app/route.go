@@ -10,7 +10,6 @@ func setRoute(
 	updateCntrl controller.UpdateCntrl,
 ) {
 
-	e.GET("update", updateCntrl.Form)
-	e.POST("update", updateCntrl.Submit)
-
+	e.GET("/update/:gsheet/r/:row", updateCntrl.Form)
+	e.POST("/update/:gsheet/r/:row", updateCntrl.Submit)
 }

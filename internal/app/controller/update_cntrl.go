@@ -2,6 +2,7 @@ package controller
 
 import (
 	"bytes"
+	"fmt"
 	"net/http"
 
 	"github.com/imantung/golang_webform_for_gsheet/internal/app/infra/di"
@@ -14,27 +15,73 @@ type (
 		Submit(ec echo.Context) error
 	}
 	UpdateCntrlImpl struct{}
+	UpdateFormData  struct {
+		Gsheet   string `param:"gsheet"`
+		Row      int    `param:"row"`
+		Name     string `form:"name"`
+		Gender   string `form:"gender"`
+		Level    string `form:"level"`
+		State    string `form:"state"`
+		Major    string `form:"major"`
+		Activity string `form:"activity"`
+	}
 )
 
 func init() {
 	di.Provide(func() UpdateCntrl { return &UpdateCntrlImpl{} })
 }
 
-func (*UpdateCntrlImpl) Form(ec echo.Context) error {
-	var buf bytes.Buffer
+// Show update form
+func (u *UpdateCntrlImpl) Form(ec echo.Context) error {
+	var data struct {
+		Gsheet string `param:"gsheet"`
+		Row    int    `param:"row"`
+		Error  string `query:"err"`
+	}
 
+	if err := ec.Bind(&data); err != nil {
+		return err
+	}
+
+	if err := validate.Struct(&data); err != nil {
+		return ec.HTML(http.StatusBadRequest, err.Error())
+	}
+
+	fmt.Printf("%+v\n", data) // debug
+
+	var buf bytes.Buffer
 	tmpl.ExecuteTemplate(&buf, UpdateFormTmplFile, UpdateFormTmplData{
-		Opts: UpdateFormOpts{
-			Genders:    []string{"Male", "Female"},
-			Levels:     []string{"1. Freshman", "2. Sophomore", "4. Senior", "3. Junior"},
-			States:     []string{"CA", "SD", "NC", "WI", "MD", "NE", "MA", "FL", "SC", "AK", "NY", "NH", "RI"},
-			Majors:     []string{"English", "Math", "Art", "Physics"},
-			Activities: []string{"Drama Club", "Lacrosse", "Basketball", "Baseball", "Debate", "Track & Field"},
-		},
+		Row:   data.Row,
+		Error: data.Error,
+		Opts:  DefaultUpdateFormOpts,
 	})
 	return ec.HTML(http.StatusServiceUnavailable, buf.String())
 }
 
-func (*UpdateCntrlImpl) Submit(ec echo.Context) error {
+// Accept form submit
+func (u *UpdateCntrlImpl) Submit(ec echo.Context) error {
+	var data struct {
+		Gsheet   string `param:"gsheet" validate:"required"`
+		Row      int    `param:"row" validate:"required"`
+		Name     string `form:"name" validate:"required"`
+		Gender   string `form:"gender" validate:"required"`
+		Level    string `form:"level" validate:"required"`
+		State    string `form:"state" validate:"required"`
+		Major    string `form:"major" validate:"required"`
+		Activity string `form:"activity" validate:"required"`
+	}
+
+	if err := ec.Bind(&data); err != nil {
+		return err
+	}
+
+	if err := validate.Struct(&data); err != nil {
+		path := fmt.Sprintf("/update/%s/r/%d?err=%s",
+			data.Gsheet, data.Row, validationErrorMessage(err))
+		return ec.Redirect(http.StatusSeeOther, path)
+	}
+
+	fmt.Printf("%+v\n", data) // debug
+
 	return ec.HTML(http.StatusServiceUnavailable, "Unavailable")
 }

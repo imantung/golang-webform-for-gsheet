@@ -6,11 +6,26 @@ import (
 
 var tmpl = template.Must(template.ParseGlob("web/template/*.gohtml"))
 
-var UpdateFormTmplFile = "update_form.gohtml"
+// NOTE: put template related variable and type here
+
+// >>>>>>>>>>>>>>>>>>>> update_form.gohtml >>>>>>>>>>>>>>>>>>>>>
+
+var (
+	UpdateFormTmplFile    = "update_form.gohtml"
+	DefaultUpdateFormOpts = UpdateFormOpts{
+		Genders:    []string{"Male", "Female"},
+		Levels:     []string{"1. Freshman", "2. Sophomore", "4. Senior", "3. Junior"},
+		States:     []string{"CA", "SD", "NC", "WI", "MD", "NE", "MA", "FL", "SC", "AK", "NY", "NH", "RI"},
+		Majors:     []string{"English", "Math", "Art", "Physics"},
+		Activities: []string{"Drama Club", "Lacrosse", "Basketball", "Baseball", "Debate", "Track & Field"},
+	}
+)
 
 type (
 	UpdateFormTmplData struct {
-		Opts UpdateFormOpts
+		Row   int
+		Error string
+		Opts  UpdateFormOpts
 	}
 	UpdateFormOpts struct {
 		Genders    []string
@@ -20,3 +35,5 @@ type (
 		Activities []string
 	}
 )
+
+// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
