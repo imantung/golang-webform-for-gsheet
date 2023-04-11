@@ -17,6 +17,10 @@ type (
 		ReadTimeout  time.Duration `envconfig:"READ_TIMEOUT" default:"5s"`
 		WriteTimeout time.Duration `envconfig:"WRITE_TIMEOUT" default:"10s"`
 		Debug        bool          `envconfig:"DEBUG" default:"true"`
+
+		Gsheet struct {
+			CredPath string `envconfig:"CRED_PATH" default:"service-account.json" required:"true"`
+		}
 	}
 )
 

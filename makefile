@@ -5,4 +5,7 @@ run:
 
 generate:
 	@go install github.com/imantung/file_append
+	@go install github.com/golang/mock/mockgen@v1.6.0
 	@PROJ=${PROJ} go generate ./...
+
+.PHONY: run generate
