@@ -15,16 +15,6 @@ type (
 		Submit(ec echo.Context) error
 	}
 	UpdateCntrlImpl struct{}
-	UpdateFormData  struct {
-		Gsheet   string `param:"gsheet"`
-		Row      int    `param:"row"`
-		Name     string `form:"name"`
-		Gender   string `form:"gender"`
-		Level    string `form:"level"`
-		State    string `form:"state"`
-		Major    string `form:"major"`
-		Activity string `form:"activity"`
-	}
 )
 
 func init() {
