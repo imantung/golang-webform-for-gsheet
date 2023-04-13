@@ -56,7 +56,7 @@ func (u *UpdateCntrlImpl) Form(ec echo.Context) error {
 		Student: student,
 		Opts:    DefaultUpdateFormOpts,
 	})
-	return ec.HTML(http.StatusServiceUnavailable, buf.String())
+	return ec.HTML(http.StatusOK, buf.String())
 }
 
 // Accept form submit
