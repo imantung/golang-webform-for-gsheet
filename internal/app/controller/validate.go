@@ -22,7 +22,7 @@ func init() {
 	_ = en_translations.RegisterDefaultTranslations(validate, translator)
 }
 
-func validationErrorMessage(err error) string {
+func valdnErrMsg(err error) string {
 	errs := err.(validator.ValidationErrors)
 	var msgs []string
 	for _, val := range errs.Translate(translator) {

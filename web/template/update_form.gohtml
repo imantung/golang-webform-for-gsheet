@@ -2,14 +2,21 @@
 
 <h1>Update Student #{{.Row}}</h1>
 
-{{.Error}}
+{{if .Error}}
+<div>{{.Error}}</div>
+{{end}}
+
+{{if .Success}}
+<div>{{.Success}}</div>
+{{end}}
+
 
 
 <form method="post">
     <table>
         <tr>
             <td><label for="name">Name:</label></td>
-            <td><input type="text" id="name" name="name"></td>
+            <td><input type="text" id="name" name="name" value="{{.Student.Name}}"></td>
         </tr>
         
         <tr>
@@ -17,7 +24,7 @@
             <td>
                 <select type="text" id="gender" name="gender">
                     {{range $item := .Opts.Genders}}
-                    <option>{{$item}}</option>
+                    <option {{if eq $item $.Student.Gender}} selected {{ end }} >{{$item}}</option>
                     {{end}}
                 </select>
             </td>
@@ -28,7 +35,7 @@
             <td>
                 <select type="text" id="level" name="level">
                     {{range $item := .Opts.Levels}}
-                    <option>{{$item}}</option>
+                    <option {{if eq $item $.Student.Level}} selected {{ end }} >{{$item}}</option>
                     {{end}}
                 </select>
             </td>
@@ -40,7 +47,7 @@
         <td>
             <select type="text" id="state" name="state">
                 {{range $item := .Opts.States}}
-                <option>{{$item}}</option>
+                <option {{if eq $item $.Student.State}} selected {{ end }} >{{$item}}</option>
                 {{end}}
             </select>
         </td>
@@ -51,7 +58,7 @@
         <td>
             <select type="text" id="major" name="major">
                 {{range $item := .Opts.Majors}}
-                <option>{{$item}}</option>
+                <option {{if eq $item $.Student.Major}} selected {{ end }} >{{$item}}</option>
                 {{end}}
             </select>
         </td>
@@ -62,7 +69,7 @@
         <td>
             <select type="text" id="activity" name="activity">
                 {{range $item := .Opts.Activities}}
-                <option>{{$item}}</option>
+                <option {{if eq $item $.Student.Activity}} selected {{ end }} >{{$item}}</option>
                 {{end}}
             </select>
         </td>

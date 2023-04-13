@@ -2,6 +2,8 @@ package controller
 
 import (
 	"html/template"
+
+	"github.com/imantung/golang_webform_for_gsheet/internal/app/repo"
 )
 
 var tmpl = template.Must(template.ParseGlob("web/template/*.gohtml"))
@@ -23,9 +25,11 @@ var (
 
 type (
 	UpdateFormTmplData struct {
-		Row   int
-		Error string
-		Opts  UpdateFormOpts
+		Row     int
+		Error   string
+		Success string
+		Student *repo.Student
+		Opts    UpdateFormOpts
 	}
 	UpdateFormOpts struct {
 		Genders    []string

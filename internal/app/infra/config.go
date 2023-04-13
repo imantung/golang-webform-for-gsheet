@@ -18,7 +18,7 @@ type (
 		WriteTimeout time.Duration `envconfig:"WRITE_TIMEOUT" default:"10s"`
 		Debug        bool          `envconfig:"DEBUG" default:"true"`
 
-		Gsheet struct {
+		GSheet struct {
 			CredPath string `envconfig:"CRED_PATH" default:"service-account.json" required:"true"`
 		}
 	}
@@ -29,6 +29,7 @@ type (
 //go:generate file_append $PROJ/.envrc export APP_READ_TIMEOUT=5s
 //go:generate file_append $PROJ/.envrc export APP_WRITE_TIMEOUT=10s
 //go:generate file_append $PROJ/.envrc export APP_DEBUG=true
+//go:generate file_append $PROJ/.envrc export APP_GSHEET_CRED_PATH=service-account.json
 
 func init() {
 	di.Provide(LoadAppConfig)
