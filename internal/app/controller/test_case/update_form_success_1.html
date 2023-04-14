@@ -1,20 +1,20 @@
 <html>
 
 <body>
-    <h1>Update Student #{{.Row}}</h1>
-    {{if .Error}}<div>{{.Error}}</div>{{end}}
-    {{if .Success}}<div>{{.Success}}</div>{{end}}
+    <h1>Update Student #99</h1>
+    
+    
     <form method="post">
         <table>
             <tr>
                 <td><label for="name">Name:</label></td>
-                <td><input type="text" id="name" name="name" value="{{.Student.Name}}"></td>
+                <td><input type="text" id="name" name="name" value="some-name"></td>
             </tr>
             <tr>
                 <td><label for="gender">Gender:</label></td>
                 <td>
                     <select type="text" id="gender" name="gender">
-                        {{range $item := .Opts.Genders}}<option{{if eq $item $.Student.Gender}} selected{{ end }}>{{$item}}</option>{{end}}
+                        <option selected>Male</option><option>Female</option>
                     </select>
                 </td>
             </tr>
@@ -22,7 +22,7 @@
                 <td><label for="level">Class Level:</label></td>
                 <td>
                     <select type="text" id="level" name="level">
-                        {{range $item := .Opts.Levels}}<option{{if eq $item $.Student.Level}} selected{{ end }}>{{$item}}</option>{{end}}
+                        <option>1. Freshman</option><option>2. Sophomore</option><option>4. Senior</option><option selected>3. Junior</option>
                     </select>
                 </td>
             </tr>
@@ -30,7 +30,7 @@
                 <td><label for="state">Home State:</label></td>
                 <td>
                     <select type="text" id="state" name="state">
-                        {{range $item := .Opts.States}}<option{{if eq $item $.Student.State}} selected{{ end }}>{{$item}}</option>{{end}}
+                        <option>CA</option><option>SD</option><option>NC</option><option>WI</option><option>MD</option><option>NE</option><option>MA</option><option>FL</option><option selected>SC</option><option>AK</option><option>NY</option><option>NH</option><option>RI</option>
                     </select>
                 </td>
             </tr>
@@ -38,7 +38,7 @@
                 <td><label for="major">Major:</label></td>
                 <td>
                     <select type="text" id="major" name="major">
-                        {{range $item := .Opts.Majors}}<option{{if eq $item $.Student.Major}} selected{{ end }}>{{$item}}</option>{{end}}
+                        <option selected>English</option><option>Math</option><option>Art</option><option>Physics</option>
                     </select>
                 </td>
             </tr>
@@ -46,7 +46,7 @@
                 <td><label for="activity">Extracurricular Activity:</label></td>
                 <td>
                     <select type="text" id="activity" name="activity">
-                        {{range $item := .Opts.Activities}}<option{{if eq $item $.Student.Activity}} selected{{ end }}>{{$item}}</option>{{end}}
+                        <option>Drama Club</option><option selected>Lacrosse</option><option>Basketball</option><option>Baseball</option><option>Debate</option><option>Track &amp; Field</option>
                     </select>
                 </td>
             </tr>

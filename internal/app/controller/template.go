@@ -1,12 +1,8 @@
 package controller
 
 import (
-	"html/template"
-
 	"github.com/imantung/golang_webform_for_gsheet/internal/app/repo"
 )
-
-var tmpl = template.Must(template.ParseGlob("web/template/*.gohtml"))
 
 // NOTE: put template related variable and type here
 

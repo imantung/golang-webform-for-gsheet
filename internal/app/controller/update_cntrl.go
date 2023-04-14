@@ -3,12 +3,12 @@ package controller
 import (
 	"bytes"
 	"fmt"
+	"html/template"
 	"net/http"
 
 	"github.com/imantung/golang_webform_for_gsheet/internal/app/infra/di"
 	"github.com/imantung/golang_webform_for_gsheet/internal/app/repo"
 	"github.com/labstack/echo/v4"
-	"go.uber.org/dig"
 )
 
 type (
@@ -16,18 +16,25 @@ type (
 		Form(ec echo.Context) error
 		Submit(ec echo.Context) error
 	}
-	UpdateCntrlImpl struct {
-		dig.In
+	updateCntrlImpl struct {
 		Repo repo.StudentRepo
+		Tmpl *template.Template
 	}
 )
 
 func init() {
-	di.Provide(func(impl UpdateCntrlImpl) UpdateCntrl { return &impl })
+	di.Provide(NewUpdateCntrl)
+}
+
+func NewUpdateCntrl(repo repo.StudentRepo, tmpl *template.Template) UpdateCntrl {
+	return &updateCntrlImpl{
+		Repo: repo,
+		Tmpl: tmpl,
+	}
 }
 
 // Show update form
-func (u *UpdateCntrlImpl) Form(ec echo.Context) error {
+func (u *updateCntrlImpl) Form(ec echo.Context) error {
 	var data struct {
 		Gsheet  string `param:"gsheet"`
 		Row     int    `param:"row"`
@@ -49,7 +56,7 @@ func (u *UpdateCntrlImpl) Form(ec echo.Context) error {
 	}
 
 	var buf bytes.Buffer
-	tmpl.ExecuteTemplate(&buf, UpdateFormTmplFile, UpdateFormTmplData{
+	u.Tmpl.ExecuteTemplate(&buf, UpdateFormTmplFile, UpdateFormTmplData{
 		Row:     data.Row,
 		Error:   data.Error,
 		Success: data.Success,
@@ -60,7 +67,7 @@ func (u *UpdateCntrlImpl) Form(ec echo.Context) error {
 }
 
 // Accept form submit
-func (u *UpdateCntrlImpl) Submit(ec echo.Context) error {
+func (u *updateCntrlImpl) Submit(ec echo.Context) error {
 	var data struct {
 		Gsheet   string `param:"gsheet" validate:"required"`
 		Row      int    `param:"row" validate:"required"`
