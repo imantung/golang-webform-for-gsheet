@@ -1,6 +1,7 @@
 package repo
 
 import (
+	"errors"
 	"fmt"
 	"strconv"
 
@@ -47,11 +48,10 @@ func (s *StudentRepoImpl) FindOne(gsheet string, row int) (*Student, error) {
 		return nil, err
 	}
 	if len(resp.Values) < 1 {
-		return nil, fmt.Errorf("row #%d not found", row)
+		return nil, fmt.Errorf("missing row: %d", row)
 	}
 
-	student := s.convertToStudent(resp.Values[0])
-	return student, nil
+	return s.convertToStudent(resp.Values[0])
 }
 
 func (s *StudentRepoImpl) Update(gsheet string, row int, student *Student) error {
@@ -61,7 +61,10 @@ func (s *StudentRepoImpl) Update(gsheet string, row int, student *Student) error
 	return err
 }
 
-func (s *StudentRepoImpl) convertToStudent(val []interface{}) *Student {
+func (s *StudentRepoImpl) convertToStudent(val []interface{}) (*Student, error) {
+	if len(val) < 7 {
+		return nil, errors.New("expecting 7 column")
+	}
 	row, _ := strconv.Atoi(val[0].(string))
 	return &Student{
 		Row:      row,
@@ -71,7 +74,7 @@ func (s *StudentRepoImpl) convertToStudent(val []interface{}) *Student {
 		State:    val[4].(string),
 		Major:    val[5].(string),
 		Activity: val[6].(string),
-	}
+	}, nil
 }
 
 func (s *StudentRepoImpl) convertToRowValue(student *Student) []interface{} {
