@@ -6,7 +6,6 @@ import (
 	"strconv"
 
 	"github.com/imantung/golang_webform_for_gsheet/internal/app/infra/di"
-	"go.uber.org/dig"
 	"google.golang.org/api/sheets/v4"
 )
 
@@ -26,8 +25,7 @@ type (
 		FindOne(gsheet string, row int) (*Student, error)
 		Update(gsheet string, row int, student *Student) error
 	}
-	StudentRepoImpl struct {
-		dig.In
+	studentRepoImpl struct {
 		Gs *sheets.Service
 	}
 )
@@ -37,12 +35,18 @@ const (
 )
 
 func init() {
-	di.Provide(func(impl StudentRepoImpl) StudentRepo {
-		return &impl
-	})
+	di.Provide(NewStudentRepo)
 }
 
-func (s *StudentRepoImpl) FindOne(gsheet string, row int) (*Student, error) {
+// NewStudentRepo
+func NewStudentRepo(gs *sheets.Service) StudentRepo {
+	return &studentRepoImpl{
+		Gs: gs,
+	}
+}
+
+// FindOne
+func (s *studentRepoImpl) FindOne(gsheet string, row int) (*Student, error) {
 	resp, err := s.Gs.Spreadsheets.Values.Get(gsheet, s.getRange(row)).Do()
 	if err != nil {
 		return nil, err
@@ -54,14 +58,15 @@ func (s *StudentRepoImpl) FindOne(gsheet string, row int) (*Student, error) {
 	return s.convertToStudent(resp.Values[0])
 }
 
-func (s *StudentRepoImpl) Update(gsheet string, row int, student *Student) error {
+// Update
+func (s *studentRepoImpl) Update(gsheet string, row int, student *Student) error {
 	var vr sheets.ValueRange
 	vr.Values = append(vr.Values, s.convertToRowValue(student))
 	_, err := s.Gs.Spreadsheets.Values.Update(gsheet, s.getRange(row), &vr).ValueInputOption("RAW").Do()
 	return err
 }
 
-func (s *StudentRepoImpl) convertToStudent(val []interface{}) (*Student, error) {
+func (s *studentRepoImpl) convertToStudent(val []interface{}) (*Student, error) {
 	if len(val) < 7 {
 		return nil, errors.New("expecting 7 column")
 	}
@@ -77,7 +82,7 @@ func (s *StudentRepoImpl) convertToStudent(val []interface{}) (*Student, error) 
 	}, nil
 }
 
-func (s *StudentRepoImpl) convertToRowValue(student *Student) []interface{} {
+func (s *studentRepoImpl) convertToRowValue(student *Student) []interface{} {
 	return []interface{}{
 		student.Row,
 		student.Name,
@@ -89,6 +94,6 @@ func (s *StudentRepoImpl) convertToRowValue(student *Student) []interface{} {
 	}
 }
 
-func (s *StudentRepoImpl) getRange(row int) string {
+func (s *studentRepoImpl) getRange(row int) string {
 	return fmt.Sprintf("%s!%d:%d", SheetName, row, row)
 }
